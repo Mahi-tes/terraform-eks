@@ -20,3 +20,11 @@ variable "node_name" {
   
   
 }
+
+variable "securitygroup_id" {
+  
+}
+
+variable "keypair_name" {
+  
+}

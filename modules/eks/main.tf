@@ -16,6 +16,7 @@ resource "aws_eks_cluster" "eks_cluster" {
     role_arn = aws_iam_role.cluster_role.arn
     vpc_config {
     subnet_ids = [var.subnet_1_id, var.subnet_2_id]
+    security_group_ids = [var.securitygroup_id]
   }
 }
 
@@ -74,6 +75,11 @@ resource "aws_eks_node_group" "eks_node" {
   node_role_arn   = aws_iam_role.node_role.arn
   subnet_ids      = [var.subnet_1_id, var.subnet_2_id]
   instance_types  = ["t3.medium"]
+
+  remote_access {
+    ec2_ssh_key = var.keypair_name
+    source_security_group_ids = [var.securitygroup_id]
+  }
 
   scaling_config {
     desired_size = 2

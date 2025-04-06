@@ -29,11 +29,13 @@ module "ec2" {
 }
 
 module "eks" {
-  source = "./modules/eks"
-  clusterrole_name = var.clusterrole_name
-  cluster_name = var.cluster_name
-  noderole_name = var.noderole_name
-  node_name = var.node_name
-  subnet_1_id = module.vpc.subnet1_id
-  subnet_2_id = module.vpc.subnet2_id
+  source            = "./modules/eks"
+  clusterrole_name  = var.clusterrole_name
+  cluster_name      = var.cluster_name
+  noderole_name     = var.noderole_name
+  node_name         = var.node_name
+  subnet_1_id       = module.vpc.subnet1_id
+  subnet_2_id       = module.vpc.subnet2_id
+  securitygroup_id = module.vpc.securitygroup_id 
+  keypair_name      = module.ec2.keypair_name
 }
