@@ -69,13 +69,24 @@ resource "aws_iam_role_policy_attachment" "cni_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
+resource "aws_iam_role_policy_attachment" "ebs_policy" {
+  role       = aws_iam_role.node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_full_access_policy" {
+  role       = aws_iam_role.node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+}
+
 resource "aws_eks_node_group" "eks_node" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = var.node_name
   node_role_arn   = aws_iam_role.node_role.arn
   subnet_ids      = [var.subnet_1_id, var.subnet_2_id]
   instance_types  = ["t3.medium"]
-
+  
+  
   remote_access {
     ec2_ssh_key = var.keypair_name
     source_security_group_ids = [var.securitygroup_id]
